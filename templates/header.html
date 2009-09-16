@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title> Wecolage{% if paste %}: {{ paste.name }} ({{ paste.code }}) {% endif %}</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+		<link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print" />	
+		<!--[if lt IE 8]><link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, 
+		projection" /><![endif]-->
+		
+		<link rel="stylesheet" type="text/css" href="/css/code_styles.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+		
+		<script type="text/javascript" src="/js/jquery-1.3.2.min.js"></script>
+		{% if explain %}
+		<script type="text/javascript">	
+		opacity = 0;
+		moving = false;
+		fadeTime = 300;
+		jQuery(document).ready(function($){
+			$("#qmark").attr("href", "javascript:;").click(function(){
+				if (!moving){
+					if (opacity == 0){
+						moving = true;
+						$("#explanation").fadeIn(fadeTime, function(){
+							opacity = 1;
+							moving = false;
+						});
+					} else {
+						moving = true;
+						$("#explanation").fadeOut(fadeTime, function(){
+							opacity = 0;
+							moving = false;
+						});
+					} 
+				}
+			});
+		});
+		</script>
+		{% endif %}
+	</head>
+	<body> <div class="container">
+		
+		<div class="container logocontainer">
+			
+		<h1> <a class="logo" href="/">We<span class="sublogo">colage</span></a>{% if explain %}<a href="/about" id="qmark">(?)</a><span id="explanation" class="hidden"> = Portmanteau(We, Bricolage).asVerb; <a href="/about">README</a></span>{% endif %}
+			{% if paste %}: <span class="subtext">{{ paste.name }} (<a href="{{ paste_url }}">{{ paste.code }}</a>) </span> {% endif %} </h1>
+		</div>
+		
+		<hr/>
+		
+		<div class="container">
+			
+			<div class="column span-16">
+		
+			{% if flash %} <div class="flash">{{ flash }}</div><br/><hr/> {% endif %}

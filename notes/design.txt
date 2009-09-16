@@ -1,0 +1,15 @@
+User - linked to OpenID
+
+Paste:
+content - multiline, unicode - 
+date created - 
+format - what type of paste it is
+	comment, python, c, html, link, 
+password_hash - 
+salt - 
+name - 
+creator - user 
+
+
+wecolage
+wecoleur

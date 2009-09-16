@@ -1,0 +1,32 @@
+
+<div class="column span-8 last">
+	
+	{% if session.user %}
+	
+		<p>You're logged in as {{session.nickname}}.
+		<a href="{{ session.logout_url }}">Logout?</a>
+		</p>
+		
+		<hr/>
+		
+		<p>Friend requests</p>
+		
+		<hr/>
+		
+		<p>Friends</p>
+		
+		<hr/>
+		
+		<p><a href="/settings/{{session.usercode}}">Settings</a></p>
+	
+	{% else %}
+	
+		<p>This site is even better if you
+		<a href="{{ session.login_url }}">login or create an account</a>.
+		</p>
+		
+	{% endif %}
+	
+		<hr/>
+
+</div>
