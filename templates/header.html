@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title> Wecolage{% if paste %}: {{ paste.name }} ({{ paste.code }}) {% endif %}</title>
+		<title> Wecolage{% if paste %}: {{ paste.name }} ({{ paste.pastecode }}) {% endif %}</title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -12,7 +12,7 @@
 		projection" /><![endif]-->
 		
 		<link rel="stylesheet" type="text/css" href="/css/code_styles.css"/>
-		<link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css"/>
 		
 		<script type="text/javascript" src="/js/jquery-1.3.2.min.js"></script>
 		{% if explain %}
@@ -46,8 +46,8 @@
 		
 		<div class="container logocontainer">
 			
-		<h1> <a class="logo" href="/">We<span class="sublogo">colage</span></a>{% if explain %}<a href="/about" id="qmark">(?)</a><span id="explanation" class="hidden"> = Portmanteau(We, Bricolage).asVerb; <a href="/about">README</a></span>{% endif %}
-			{% if paste %}: <span class="subtext">{{ paste.name }} (<a href="{{ paste_url }}">{{ paste.code }}</a>) </span> {% endif %} </h1>
+		<h1> <a class="logo" href="/"><span class="maroon">We</span><span class="sublogo">colage</span></a>{% if explain %}<a href="/about" id="qmark">(?)</a><span id="explanation" class="hidden"> <span class="black">= Portmanteau(</span><span class="maroon">We</span><span class="black">,</span> <span class="purple">Bricolage</span><span class="black">);</span> <a href="/about"><span class="maroon">READ</span><span class="purple">ME</span></a></span>{% endif %}
+			{% if paste %}: <span class="subtext">{{ paste.name }} (<a href="{{ paste_url }}">{{ paste.pastecode }}</a>) </span> {% endif %} </h1>
 		</div>
 		
 		<hr/>

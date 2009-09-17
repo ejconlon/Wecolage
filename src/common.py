@@ -1,16 +1,9 @@
 
-import cgi, os, hashlib, formatting, random
+import cgi, os, hashlib, formatting, random, logging
 from google.appengine.api import users
-
-codelen = 8
-usercodelen = 8
-apikeylen = 64
-codechars = [x for x in "012345789abcdefghijklmnopqrstuvwxyz"]
 
 filename_chars = set("012345789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-")
 
-def new_code(codelen=8):
-	return "".join((random.choice(codechars) for i in xrange(codelen)))
 
 def sub_char(c):
 	if c in filename_chars:
@@ -27,6 +20,9 @@ def make_filename(s):
 		
 def sha1(s):
 	return hashlib.sha1(s).hexdigest()
+
+def has_extension(s):
+	return len(s.split('.'))>1
 
 #def get_login_link(user, request_uri):
 #	if user:

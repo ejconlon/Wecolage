@@ -10,6 +10,9 @@ handlers:
   static_dir: js
 - url: /img
   static_dir: img
-
+- url: /favicon.ico
+  static_files: img/favicon.ico
+  upload: img/favicon.ico
+  
 - url: /.*
-  script: src/wecolage.py
+  script: app.py

@@ -3,30 +3,41 @@
 	
 	{% if session.user %}
 	
-		<p>You're logged in as {{session.nickname}}.
+		<p>Logged in as {{session.nickname}}.
 		<a href="{{ session.logout_url }}">Logout?</a>
 		</p>
 		
 		<hr/>
 		
-		<p>Friend requests</p>
+		<p><a href="/profile">My pastes</a></p>
+		
+		<hr/>
+
+		{% ifequal session.num_friend_requests 0 %}
+		{% else %}		
+		<p><a href="/requests">Friend requests</a></p>
+		
+		<hr/>
+		{% endifequal %}
+		
+		<p><a href="/friends">Friends</a></p>
 		
 		<hr/>
 		
-		<p>Friends</p>
-		
-		<hr/>
-		
-		<p><a href="/settings/{{session.usercode}}">Settings</a></p>
+		<p><a href="/settings">Settings</a></p>
 	
+		<hr/>
+		
 	{% else %}
 	
 		<p>This site is even better if you
 		<a href="{{ session.login_url }}">login or create an account</a>.
 		</p>
 		
-	{% endif %}
-	
 		<hr/>
+		
+	{% endif %}
+
+	<p><a href="/about">About</a></p>
 
 </div>

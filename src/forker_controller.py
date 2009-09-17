@@ -4,14 +4,12 @@ import cgi, sessions, difflib, formatting
 
 from paste_model import Paste
 
-from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
-class Forker(webapp.RequestHandler):
+class Forker(sessions.PersistentRequestHandler):
 	def get(self, code):
-		session = sessions.get_session(self.request.uri)
-		if sessions.reset_redirect(self, session): return
-		flash = sessions.reset_flash(session)
+		self.init_session()
+		if self.do_redirect(): return
 		
 		paste = Paste.get_by_code(cgi.escape(code))
 		if paste is None:
@@ -19,23 +17,20 @@ class Forker(webapp.RequestHandler):
 			self.redirect('/404')
 			return
 		
-		template_values = {
-			'session': session,
-			'flash': flash,
+		self.template_values.update({
 			'formats': formatting.formats_ordered,
 			'paste': paste,
 			'paste_url': paste.get_url()
-		}
+		})
 		
 		path = get_template_path('edit_paste.html')
-		self.response.out.write(template.render(path, template_values, debug=True))
+		self.response.out.write(template.render(path, self.template_values, debug=True))
 		
-	def post(self):
-		session = sessions.get_session(self.request.uri)
-		if sessions.reset_redirect(self, session): return
-		flash = sessions.reset_flash(session)
+	def post(self, code):
+		self.init_session()
+		if self.do_redirect(): return
 		
-		old_code = cgi.escape(self.request.get('code'))
+		old_code = cgi.escape(self.request.get('old_code'))
 		
 		old_paste = Paste.get_by_code(old_code)
 		if old_paste is None:
@@ -43,7 +38,7 @@ class Forker(webapp.RequestHandler):
 			self.redirect('/404')
 			return
 		
-		user = users.get_current_user()
+		user = self.get_key('user')
 		paste = old_paste.start_fork(user)
 		paste.name = cgi.escape(self.request.get('name'))
 		paste.content = cgi.escape(self.request.get('content'))
@@ -58,4 +53,5 @@ class Forker(webapp.RequestHandler):
 		paste.parsed_parent_diff = formatting.highlight_with_shortname(paste.parent_diff, 'diff')
 		paste.save_new(cgi.escape(self.request.get('password')))
 		
-		self.redirect('/read/'+paste.code)
+		self.session['flash'] = 'Forked successfully.'
+		self.redirect('/paste/'+paste.pastecode)

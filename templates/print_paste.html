@@ -1,12 +1,12 @@
-<div class="paste" id="paste_{{paste.code}}">
+<div class="paste" id="paste_{{paste.pastecode}}">
 {% if paste.creator %}
 	<b> From <span class="paste_creator">{{ paste.creator.nickname }}</span>: </b>
 {% else %}
 	<b> <span class="paste_creator">Anonymous</span>: </b>
 {% endif %}
-<i><span class="paste_name">{{ paste.name }}</span></i> (<a href="/read/{{paste.code}}"><span class="paste_code">{{ paste.code }}</span></a>) <br/>
+<i><span class="paste_name">{{ paste.name }}</span></i> (<a href="/read/{{paste.pastecode}}"><span class="paste_pastecode">{{ paste.pastecode }}</span></a>) <br/>
 Format: <span class="paste_format">{{ paste.format }}</span>
 <div class="paste_content">{{ paste.parsed_content }}</div>
-<a href="/fork/{{paste.code}}">Fork it</a> | 
-<a href="/file/{{paste.code}}">Download it</a> <br/>
+<a href="/paste/{{paste.pastecode}}/fork">Fork it</a> | 
+<a href="/paste/{{paste.pastecode}}/download">Download it</a> <br/>
 </div>

@@ -1,0 +1,39 @@
+{% include "header.html" %}
+
+{% if deny_listing %}
+
+<h2>Friends of {{nickname}}</h2>
+
+<p> Sorry, {{nickname}} only shares their list of friends with other friends.</p>
+
+{% else %}
+
+{% if your_friends %}
+<h2>Your friends</h2>
+{% else %}
+<h2>Friends of {{nickname}}</h2>
+{% endif %}
+
+{% ifequal num_friends 0 %}
+{% if your_friends %}
+<p> You haven't added any friends yet.</p>
+<!--<p> <a href="/invite">Invite a few!</a> </p>-->
+{% else %}
+<p> {{nickname}} hasn't added any friends yet. </p>
+{% endif %}
+{% else %}
+	{% ifequal num_friends 1 %}
+		<p> 1 friend: </p>
+	{% else %}
+		<p> {{num_friends}} friends: </p>
+	{% endifequal %}
+	<div class="friends">
+	{% for friend_datum in friend_data %}
+		{% include "print_friend.html" %}
+	{% endfor %}
+	</div>
+{% endifequal%}
+
+{% endif %}
+
+{% include "footer.html" %}
