@@ -1,6 +1,6 @@
 <div class="paste" id="paste_{{paste.pastecode}}">
-{% if paste.creator %}
-	<b> From <span class="paste_creator">{{ paste.creator.nickname }}</span>: </b>
+{% if paste.usercode %}
+	<b> <span class="paste_creator">User <a href="/profile/{{paste.usercode}}">{{ paste.usercode }}</a></span>: </b>
 {% else %}
 	<b> <span class="paste_creator">Anonymous</span>: </b>
 {% endif %}

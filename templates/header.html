@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title> Wecolage{% if paste %}: {{ paste.name }} ({{ paste.pastecode }}) {% endif %}</title>
+		<title> Wecolage{% if paste %}: {{ paste.name }} (Paste {{ paste.pastecode }}){%else%}{%if profile_link%}: {{prof_nickname}} (User {{prof_usercode}}){%endif%}{% endif %}</title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -47,7 +47,7 @@
 		<div class="container logocontainer">
 			
 		<h1> <a class="logo" href="/"><span class="maroon">We</span><span class="sublogo">colage</span></a>{% if explain %}<a href="/about" id="qmark">(?)</a><span id="explanation" class="hidden"> <span class="black">= Portmanteau(</span><span class="maroon">We</span><span class="black">,</span> <span class="purple">Bricolage</span><span class="black">);</span> <a href="/about"><span class="maroon">READ</span><span class="purple">ME</span></a></span>{% endif %}
-			{% if paste %}: <span class="subtext">{{ paste.name }} (<a href="{{ paste_url }}">{{ paste.pastecode }}</a>) </span> {% endif %} </h1>
+			{% if paste %}: <span class="subtext">{{ paste.name }} (Paste <a href="{{ paste_url }}">{{ paste.pastecode }}</a>) </span>{%else%}{%if profile_link%}: <span class="subtext">{{prof_nickname}} (User <a href="{{profile_link}}">{{prof_usercode}}</a>)</span>{%endif%} {% endif %} </h1>
 		</div>
 		
 		<hr/>

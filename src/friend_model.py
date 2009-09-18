@@ -16,7 +16,7 @@ class Friend(db.Model):
 	
 	@staticmethod
 	def unmake_friends(code1, code2):
-		friend = Friend.gql("WHERE (my_code=:code1 AND their_code=:code2)",
+		friend = Friend.gql("WHERE my_code=:code1 AND their_code=:code2",
 										code1=code1, code2=code2)
 		db.delete(friend)
 
@@ -30,5 +30,5 @@ class Friend(db.Model):
 
 	@staticmethod
 	def already_present(code1, code2):
-		return Friend.gql("WHERE (my_code=:code1 AND their_code=:code2)",
+		return Friend.gql("WHERE my_code=:code1 AND their_code=:code2",
 										code1=code1, code2=code2).count() > 0

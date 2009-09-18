@@ -16,7 +16,7 @@ class FriendRequest(db.Model):
 	
 	@staticmethod
 	def unmake_request(code1, code2):
-		request = FriendRequest.gql("WHERE (my_code=:code1 AND their_code=:code2)",
+		request = FriendRequest.gql("WHERE my_code=:code1 AND their_code=:code2",
 										code1=code1, code2=code2)
 		db.delete(request)
 
@@ -30,9 +30,9 @@ class FriendRequest(db.Model):
 	
 	@staticmethod
 	def already_present(code1, code2):
-		return FriendRequest.gql("WHERE (my_code=:code1 AND their_code=:code2)",
+		return FriendRequest.gql("WHERE my_code=:code1 AND their_code=:code2",
 										code1=code1, code2=code2).count() > 0
 	
 	@staticmethod
 	def get_number_of_requests(code):
-		return FriendRequest.get_who_user_requested_to_follow(code).count()
+		return FriendRequest.get_who_requested_to_follow_user(code).count()

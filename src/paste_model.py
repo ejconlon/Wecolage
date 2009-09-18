@@ -69,3 +69,7 @@ class Paste(db.Model):
 	@staticmethod
 	def get_public_by_usercode(usercode):
 			return Paste.gql("WHERE usercode=:usercode AND hidden=False ORDER BY date_created DESC", usercode=usercode)
+		
+	@staticmethod	
+	def get_most_recent_public():
+		return Paste.gql("WHERE hidden=False ORDER BY date_created DESC")

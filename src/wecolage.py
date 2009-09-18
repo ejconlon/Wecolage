@@ -21,10 +21,10 @@ application = webapp.WSGIApplication(
 		('/paste/(.+)/?', 				paste_controller.Reader), 		  # GET
 		('/profile(/.+)?',				user_controller.Profile), 		  # GET
 		('/settings/?', 				user_controller.Settings), 		  # GET/POST
-		('/friends/request/?', 			friends_controller.RequestFriend),# POST
-		('/friends/remove/?', 			friends_controller.RemoveFriend), # POST
-		('/friends/reject/?', 			friends_controller.RejectRequest),# POST
-		('/friends/approve/?',			friends_controller.ApproveRequest),# POST
+		('/friends/request/(.+)', 		friends_controller.RequestFriend),# POST
+		('/friends/remove/(.+)', 		friends_controller.RemoveFriend), # POST
+		('/friends/reject/(.+)', 		friends_controller.RejectRequest),# POST
+		('/friends/approve/(.+)',		friends_controller.ApproveRequest),# POST
 		('/friends(/.+)?', 				friends_controller.ListFriends),  # GET
 		('/.*',							home_controller.FourOhFour)
 	],

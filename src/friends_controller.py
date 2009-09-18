@@ -16,7 +16,7 @@ class ListFriends(sessions.PersistentRequestHandler):
 		if usercode is None:
 			usercode = self.get_key('usercode')
 			if usercode is None: # no session
-				self.redirect('/')
+				self.redirect('/login')
 				return
 		elif usercode[0] == '/':
 			usercode = usercode[1:]
@@ -24,6 +24,19 @@ class ListFriends(sessions.PersistentRequestHandler):
 		your_friends = (usercode == self.get_key('usercode'))
 			
 		userdata = UserData.get_by_code(usercode)
+		if your_friends:
+			friend_requests = FriendRequest.get_who_requested_to_follow_user(usercode)
+			request_codes = [request.my_code for request in friend_requests]
+			num_requests = len(request_codes)
+			if num_requests == 0:
+				request_data = []
+			else:
+				request_data = UserData.get_by_codes(request_codes)
+			self.template_values.update({
+				'num_requests': num_requests,
+				'request_data': request_data
+			})
+		
 		if not your_friends and userdata.friends_hidden_by_default:
 			deny_listing = True
 		else:
@@ -37,7 +50,7 @@ class ListFriends(sessions.PersistentRequestHandler):
 				friend_data = UserData.get_by_codes(friend_codes)
 			self.template_values.update({
 				'num_friends': num_friends,
-				'friend_data' : friend_data
+				'friend_data' : friend_data,
 			})
 			
 		self.template_values.update({
@@ -50,12 +63,11 @@ class ListFriends(sessions.PersistentRequestHandler):
 		self.response.out.write(template.render(path, self.template_values, debug=True))
 		
 class RequestFriend(sessions.PersistentRequestHandler):
-	def post(self):
+	def get(self, their_usercode):
 		self.init_session()
 		if self.do_redirect(): return
 
 		my_usercode = self.get_key('usercode')
-		their_usercode = cgi.escape(self.request.get('friendcode'))
 		
 		if my_usercode is None or their_usercode is None or len(their_usercode) == 0:
 			self.restore_previous('Oops! Something went wrong there...')
@@ -79,12 +91,11 @@ class RequestFriend(sessions.PersistentRequestHandler):
 		self.restore_previous('Friend request sent to %s' % their_userdata.nickname)
 
 class RemoveFriend(sessions.PersistentRequestHandler):
-	def post(self):
+	def get(self, their_usercode):
 		self.init_session()
 		if self.do_redirect(): return
 	
 		my_usercode = self.get_key('usercode')
-		their_usercode = cgi.escape(self.request.get('friendcode'))
 		
 		if my_usercode is None or their_usercode is None or len(their_usercode) == 0:
 			self.restore_previous('Oops! Something went wrong there...')
@@ -105,12 +116,11 @@ class RemoveFriend(sessions.PersistentRequestHandler):
 		
 	
 class ApproveRequest(sessions.PersistentRequestHandler):
-	def post(self):
+	def get(self, their_usercode):
 		self.init_session()
 		if self.do_redirect(): return
 		
 		my_usercode = self.get_key('usercode')
-		their_usercode = cgi.escape(self.request.get('friendcode'))
 		
 		if my_usercode is None or their_usercode is None or len(their_usercode) == 0:
 			self.restore_previous('Oops! Something went wrong there...')
@@ -131,16 +141,15 @@ class ApproveRequest(sessions.PersistentRequestHandler):
 		Friend.make_friends(my_usercode, their_usercode)
 		Friend.make_friends(their_usercode, my_usercode)
 
-		self.restore_previous('You are no longer friends with %s' % their_userdata.nickname)
+		self.restore_previous('You are now friends with %s' % their_userdata.nickname)
 		
 class RejectRequest(sessions.PersistentRequestHandler):
-	def post(self):
+	def get(self, their_usercode):
 		self.init_session()
 		if self.do_redirect(): return
 		
 		my_usercode = self.get_key('usercode')
-		their_usercode = cgi.escape(self.request.get('friendcode'))
-
+		
 		if my_usercode is None or their_usercode is None or len(their_usercode) == 0:
 			self.restore_previous('Oops! Something went wrong there...')
 			return

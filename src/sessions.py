@@ -16,6 +16,12 @@ class PersistentRequestHandler(webapp.RequestHandler):
 		self.session = PersistentRequestHandler.get_session(self.request.uri)
 		if 'redirect' in self.session: 
 			return
+		if 'current' in self.session:
+			self.session['previous'] = self.session['current']
+		else:
+			self.session.delete_item('previous')
+		self.session['current'] = self.request.uri
+			
 		self.template_values = {
 			'session': self.session,
 			'flash': self.get_flash()
@@ -24,6 +30,7 @@ class PersistentRequestHandler(webapp.RequestHandler):
 	def do_redirect(self):
 		if 'redirect' in self.session:
 			r = self.session['redirect']
+			self.session['redirect'] = '/404'
 			self.session.delete_item('redirect')
 			self.redirect(r)
 			return True
@@ -33,6 +40,7 @@ class PersistentRequestHandler(webapp.RequestHandler):
 	def get_flash(self):
 		if 'flash' in self.session:
 			flash = self.session['flash']
+			self.session['flash'] = ''
 			self.session.delete_item('flash')
 			return flash
 		else:
@@ -56,6 +64,7 @@ class PersistentRequestHandler(webapp.RequestHandler):
 		else:
 			session['user'] = user
 			if 'got_userdata' in session and session['got_userdata']:
+				session['num_friend_requests'] = FriendRequest.get_number_of_requests(session['usercode'])
 				return session
 			return PersistentRequestHandler.load_userdata_into_session(session)
 	
@@ -91,15 +100,13 @@ class PersistentRequestHandler(webapp.RequestHandler):
 			session['got_userdata'] = False
 		return session
 		
-	def store_previous(previous):
-		self.session['previous'] = previous
-		
-	def restore_previous(flash=None):
+	def restore_previous(self, flash=None):
 		if 'previous' in self.session:
 			if flash:
 				self.session['flash'] = flash
 			previous = self.session['previous']
 			self.session.delete_item('previous')
+			self.session.delete_item('current')
 			self.redirect(previous)
 			return True
 		else:
